@@ -23,4 +23,6 @@ app.listen(3000, () => {
     console.log("server is runningdf")
 })
 
-//2:27
+//2:35
+
+// node --env-file .env --watch index.js  (use for run env  and autoupdate without any plugin)
