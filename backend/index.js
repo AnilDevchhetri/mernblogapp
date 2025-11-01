@@ -6,9 +6,13 @@ import userRouter from "./routes/user.route.js"
 import postRouter from './routes/post.route.js'
 import commentRouter from './routes/comment.route.js'
 import webHookRouter from './routes/webhook.route.js'
+import { clerkMiddleware, requireAuth } from '@clerk/express'
+
 
 const app = express();
-
+app.use(clerkMiddleware())
+//as i am using body parser for clerk webHookRoute so i call it bdroe express. json
+app.use("/webhooks", webHookRouter)
 app.use(express.json());//witout this express not allow to send raw json like when creating post    
 
 
@@ -16,11 +20,28 @@ app.use(express.json());//witout this express not allow to send raw json like wh
 //     res.status(200).send("workign")
 // })
 
+// app.get("/auth-state", (req, res) => {
+//     const authState = req.auth;
+//     res.json(authState)
+// })
+
+// app.get("/protect", (req, res) => {
+//     const { userId } = req.auth;
+//     if (!userId) {
+//         return res.status(401).json("not authentication")
+//     }
+//     res.status(200).json("content")
+// })
+
+
+// app.get("/protect2", requireAuth(), (req, res) => {
+//     res.status(200).json("content")
+// })
 app.use("/users", userRouter)
 app.use("/posts", postRouter)
 app.use("/comments", commentRouter)
 
-app.use("/webhooks", webHookRouter)
+
 
 //after express 5 we just simply define the error
 //and if it has errro like in controller it will autmaitlcy ditect it and thow
@@ -38,7 +59,7 @@ app.listen(3000, () => {
     console.log("server is runningdf")
 })
 
-//3:00
+//3:14
 
 // node --env-file .env --watch index.js  (use for run env   and autoupdate without any plugin)
 
